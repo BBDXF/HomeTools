@@ -1,0 +1,39 @@
+﻿{
+  "Version": "1.0",
+  "App": "MidiBookSearcher",
+  "Tips": "Use xpath as result fetch, and IdKey as download key. search keyword use {kw} replace.",
+  "Sources": [
+    {
+      "Name": "搜谱网",
+      "Url": "http://www.sooopu.com",
+      "Tips": "提示信息",
+      "Encoding": "GB2312",
+      "Search": {
+        "Url": "http://so.sooopu.com/pu/?q={kw}",
+        "ResultUrl": "//li[@class='c_title']/a",
+        "ResultName": "//li[@class='c_content']"
+      },
+      "Download": {
+        "ImageUrl": "//div[@class='content']//img",
+        "ImageName": "//h1[@class='title']",
+        "Meta": ""
+      }
+    },
+    {
+      "Name": "简谱网",
+      "Url": "http://www.jianpuw.com/",
+      "Tips": "提示信息",
+      "Encoding": "UTF-8",
+      "Search": {
+        "Url": "http://www.jianpuw.com/search.aspx?q={kw}",
+        "ResultUrl": "//ul/li/a",
+        "ResultName": "//ul/li"
+      },
+      "Download": {
+        "ImageUrl": "//div[@class='txt']//img",
+        "ImageName": "//div/h3",
+        "Meta": ""
+      }
+    }
+  ]
+}
