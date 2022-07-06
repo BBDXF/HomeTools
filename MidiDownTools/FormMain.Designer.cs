@@ -51,11 +51,11 @@ namespace MidiBookSearcher
             // 
             // tabControl
             // 
+            resources.ApplyResources(this.tabControl, "tabControl");
             this.tabControl.Controls.Add(this.tabPage_Search);
             this.tabControl.Controls.Add(this.tabPage_Down);
             this.tabControl.Controls.Add(this.tabPage_Config);
             this.tabControl.Controls.Add(this.tabPage_About);
-            resources.ApplyResources(this.tabControl, "tabControl");
             this.tabControl.ImageList = this.imageList1;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -63,15 +63,16 @@ namespace MidiBookSearcher
             // 
             // tabPage_Search
             // 
+            resources.ApplyResources(this.tabPage_Search, "tabPage_Search");
             this.tabPage_Search.BackColor = System.Drawing.Color.Transparent;
             this.tabPage_Search.Controls.Add(this.dataGridView);
             this.tabPage_Search.Controls.Add(this.panel_search_top);
-            resources.ApplyResources(this.tabPage_Search, "tabPage_Search");
             this.tabPage_Search.Name = "tabPage_Search";
             this.tabPage_Search.UseWaitCursor = true;
             // 
             // dataGridView
             // 
+            resources.ApplyResources(this.dataGridView, "dataGridView");
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AllowUserToResizeRows = false;
@@ -79,7 +80,6 @@ namespace MidiBookSearcher
             this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            resources.ApplyResources(this.dataGridView, "dataGridView");
             this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
@@ -90,17 +90,17 @@ namespace MidiBookSearcher
             // 
             // panel_search_top
             // 
+            resources.ApplyResources(this.panel_search_top, "panel_search_top");
             this.panel_search_top.Controls.Add(this.button_search);
             this.panel_search_top.Controls.Add(this.textBox_search_input);
             this.panel_search_top.Controls.Add(this.comboBox_search_source);
-            resources.ApplyResources(this.panel_search_top, "panel_search_top");
             this.panel_search_top.Name = "panel_search_top";
             this.panel_search_top.UseWaitCursor = true;
             // 
             // button_search
             // 
-            this.button_search.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             resources.ApplyResources(this.button_search, "button_search");
+            this.button_search.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.button_search.Name = "button_search";
             this.button_search.UseVisualStyleBackColor = false;
             this.button_search.UseWaitCursor = true;
@@ -114,8 +114,8 @@ namespace MidiBookSearcher
             // 
             // comboBox_search_source
             // 
-            this.comboBox_search_source.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.comboBox_search_source, "comboBox_search_source");
+            this.comboBox_search_source.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_search_source.FormattingEnabled = true;
             this.comboBox_search_source.Name = "comboBox_search_source";
             this.comboBox_search_source.UseWaitCursor = true;
