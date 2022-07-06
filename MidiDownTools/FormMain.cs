@@ -66,6 +66,8 @@ namespace MidiBookSearcher
             col2.Text = "下载";
             col2.UseColumnTextForButtonValue = true;
             dataGridView.Columns.Add(col2);
+
+            label_log.Text = "Initial finished.";
         }
 
         private void button_search_Click(object sender, EventArgs e)
@@ -136,11 +138,22 @@ namespace MidiBookSearcher
                     System.IO.Directory.CreateDirectory(folder);
                     // images
                     var xmlNodes = doc.DocumentNode.SelectNodes(src.Download.ImageUrl);
-                    for (var i = 0; i < xmlNodes.Count(); i++)
+                    var nc = xmlNodes.Count();
+                    for (var i = 0; i < nc; i++)
                     {
                         var reflink = xmlNodes[i].Attributes["src"].Value.ToString();
                         var imgurl = $"{src.Url}{reflink}";
-                        _appTool.FetchGetFile(imgurl, $"{folder}/{i+1}{System.IO.Path.GetExtension(reflink)}");
+                        var targetPath = $"{folder}/{i + 1}{System.IO.Path.GetExtension(reflink)}";
+                        label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download start...";
+                        if( _appTool.FetchGetFile(imgurl, targetPath) < 0)
+                        {
+                            label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Failed.";
+                        }
+                        else
+                        {
+                            label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Done.";
+                        }
+                        
                     }
                 }
             }
