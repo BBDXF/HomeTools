@@ -21,6 +21,7 @@ namespace CameraExifTool
         public DlgMain()
         {
             InitializeComponent();
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         private void DlgMain_Load(object sender, EventArgs e)
