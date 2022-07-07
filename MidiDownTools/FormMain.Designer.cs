@@ -40,21 +40,20 @@ namespace MidiBookSearcher
             this.button_search = new System.Windows.Forms.Button();
             this.textBox_search_input = new System.Windows.Forms.TextBox();
             this.comboBox_search_source = new System.Windows.Forms.ComboBox();
-            this.tabPage_Down = new System.Windows.Forms.TabPage();
-            this.tabPage_Config = new System.Windows.Forms.TabPage();
             this.tabPage_About = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label_about = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage_Search.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel_search_top.SuspendLayout();
+            this.tabPage_About.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.tabPage_Search);
-            this.tabControl.Controls.Add(this.tabPage_Down);
-            this.tabControl.Controls.Add(this.tabPage_Config);
             this.tabControl.Controls.Add(this.tabPage_About);
             resources.ApplyResources(this.tabControl, "tabControl");
             this.tabControl.ImageList = this.imageList1;
@@ -127,22 +126,13 @@ namespace MidiBookSearcher
             resources.ApplyResources(this.comboBox_search_source, "comboBox_search_source");
             this.comboBox_search_source.FormattingEnabled = true;
             this.comboBox_search_source.Name = "comboBox_search_source";
+            this.toolTip1.SetToolTip(this.comboBox_search_source, resources.GetString("comboBox_search_source.ToolTip"));
             this.comboBox_search_source.UseWaitCursor = true;
-            // 
-            // tabPage_Down
-            // 
-            resources.ApplyResources(this.tabPage_Down, "tabPage_Down");
-            this.tabPage_Down.Name = "tabPage_Down";
-            this.tabPage_Down.UseVisualStyleBackColor = true;
-            // 
-            // tabPage_Config
-            // 
-            resources.ApplyResources(this.tabPage_Config, "tabPage_Config");
-            this.tabPage_Config.Name = "tabPage_Config";
-            this.tabPage_Config.UseVisualStyleBackColor = true;
+            this.comboBox_search_source.SelectedIndexChanged += new System.EventHandler(this.comboBox_search_source_SelectedIndexChanged);
             // 
             // tabPage_About
             // 
+            this.tabPage_About.Controls.Add(this.label_about);
             resources.ApplyResources(this.tabPage_About, "tabPage_About");
             this.tabPage_About.Name = "tabPage_About";
             this.tabPage_About.UseVisualStyleBackColor = true;
@@ -158,6 +148,12 @@ namespace MidiBookSearcher
             this.imageList1.Images.SetKeyName(3, "search.png");
             this.imageList1.Images.SetKeyName(4, "midi.ico");
             // 
+            // label_about
+            // 
+            resources.ApplyResources(this.label_about, "label_about");
+            this.label_about.ForeColor = System.Drawing.Color.DarkGreen;
+            this.label_about.Name = "label_about";
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
@@ -170,6 +166,8 @@ namespace MidiBookSearcher
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panel_search_top.ResumeLayout(false);
             this.panel_search_top.PerformLayout();
+            this.tabPage_About.ResumeLayout(false);
+            this.tabPage_About.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -178,8 +176,6 @@ namespace MidiBookSearcher
 
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage_Search;
-        private System.Windows.Forms.TabPage tabPage_Down;
-        private System.Windows.Forms.TabPage tabPage_Config;
         private System.Windows.Forms.TabPage tabPage_About;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Panel panel_search_top;
@@ -188,6 +184,8 @@ namespace MidiBookSearcher
         private System.Windows.Forms.ComboBox comboBox_search_source;
         private System.Windows.Forms.DataGridView dataGridView;
         private Label label_log;
+        private ToolTip toolTip1;
+        private Label label_about;
     }
 }
 

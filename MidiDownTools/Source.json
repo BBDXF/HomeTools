@@ -5,8 +5,8 @@
   "Sources": [
     {
       "Name": "搜谱网",
-      "Url": "http://www.sooopu.com",
-      "Tips": "提示信息",
+      "Url": "http://www.sooopu.com/",
+      "Tips": "比较基础的一个搜索站点",
       "Encoding": "GB2312",
       "Search": {
         "Url": "http://so.sooopu.com/pu/?q={kw}",
@@ -20,9 +20,41 @@
       }
     },
     {
+      "Name": "中国曲谱网",
+      "Url": "http://www.qupu123.com/",
+      "Tips": "内容含量比较多,杂,图片质量很不错",
+      "Encoding": "UTF-8",
+      "Search": {
+        "Url": "http://www.qupu123.com/Search?keys={kw}&cid=",
+        "ResultUrl": "//table[@class='opern_list']/tr/td[@class='f1']/a",
+        "ResultName": "//table[@class='opern_list']/tr"
+      },
+      "Download": {
+        "ImageUrl": "//div[@class='imageList']//img",
+        "ImageName": "//div[@class='content_head']/h1",
+        "Meta": ""
+      }
+    },
+    {
+      "Name": "歌谱简谱网",
+      "Url": "http://www.jianpu.cn/",
+      "Tips": "类似中国曲谱网，内容也不错",
+      "Encoding": "GB2312",
+      "Search": {
+        "Url": "http://www.jianpu.cn/search/?q={kw}&Submit=%CB%D1%CB%F7",
+        "ResultUrl": "//table/tr/td/a",
+        "ResultName": "//table/tr[position()>1]"
+      },
+      "Download": {
+        "ImageUrl": "//div[@id='jianpu']//img",
+        "ImageName": "//h1[@id='h1title']",
+        "Meta": ""
+      }
+    },
+    {
       "Name": "简谱网",
       "Url": "http://www.jianpuw.com/",
-      "Tips": "提示信息",
+      "Tips": "部分图片有加密,不建议经常使用",
       "Encoding": "UTF-8",
       "Search": {
         "Url": "http://www.jianpuw.com/search.aspx?q={kw}",

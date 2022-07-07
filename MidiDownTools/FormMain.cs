@@ -29,9 +29,17 @@ namespace MidiBookSearcher
         private void FormMain_Load(object sender, EventArgs e)
         {
             // config
-            _appSrc = _appTool.LoadConfigSources();
-            Debug.WriteLine(_appSrc);
-            foreach(var sr in _appSrc.Sources)
+            try
+            {
+                _appSrc = _appTool.LoadConfigSources();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误:");
+                return;
+            }
+
+            foreach (var sr in _appSrc.Sources)
             {
                 comboBox_search_source.Items.Add(sr.Name);
             }
@@ -73,7 +81,7 @@ namespace MidiBookSearcher
         private void button_search_Click(object sender, EventArgs e)
         {
             var kw = textBox_search_input.Text.Trim();
-            if ( kw.Length < 1 )
+            if (kw.Length < 1)
             {
                 MessageBox.Show("Input is empty!", "Warning");
                 return;
@@ -82,81 +90,108 @@ namespace MidiBookSearcher
             // source
             var src = _appSrc.Sources[comboBox_search_source.SelectedIndex];
 
-            var url_s = src.Search.Url.Replace("{kw}",_appTool.UrlEncode(kw, src.Encoding));
+            var url_s = src.Search.Url.Replace("{kw}", _appTool.UrlEncode(kw, src.Encoding));
 
             Debug.WriteLine($"Source: {src.Name}, {src.Url} {kw} => {url_s}");
 
             var html = "";
-            if (_appTool.FetchGet(url_s, ref html, src.Encoding) > 0)
+            try
             {
-                var doc = new HtmlAgilityPack.HtmlDocument();
-                doc.LoadHtml(html);
-                var xmlNodes = doc.DocumentNode.SelectNodes(src.Search.ResultUrl);
-                for(var i=0; i<xmlNodes.Count();i++)
+                if (_appTool.FetchGet(url_s, ref html, src.Encoding) > 0)
                 {
-                    var nd = xmlNodes[i];
-                    int nrow = dataGridView.Rows.Add();
-                    dataGridView.Rows[nrow].Cells[0].Value = i+1;
-                    dataGridView.Rows[nrow].Cells[1].Value = nd.InnerText;
-                    var url2 = nd.Attributes["href"].Value;
-                    if ( !url2.StartsWith("http") )
+                    var doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(html);
+                    var xmlNodes = doc.DocumentNode.SelectNodes(src.Search.ResultUrl);
+                    for (var i = 0; i < xmlNodes.Count(); i++)
                     {
-                        url2 = src.Url + url2;
+                        var nd = xmlNodes[i];
+                        int nrow = dataGridView.Rows.Add();
+                        dataGridView.Rows[nrow].Cells[0].Value = i + 1;
+                        dataGridView.Rows[nrow].Cells[1].Value = nd.InnerText;
+                        var url2 = nd.Attributes["href"].Value;
+                        if (!url2.StartsWith("http"))
+                        {
+                            if (url2.StartsWith("/"))
+                            {
+                                url2 = url2.Substring(1);
+                            }
+                            url2 = src.Url + url2;
+                        }
+                        dataGridView.Rows[nrow].Cells[3].Value = url2;
+                        //dataGridView.Rows[nrow].Cells[4]. = "下载";
                     }
-                    dataGridView.Rows[nrow].Cells[3].Value = url2;
-                    //dataGridView.Rows[nrow].Cells[4]. = "下载";
+                    // detail
+                    xmlNodes = doc.DocumentNode.SelectNodes(src.Search.ResultName);
+                    for (var i = 0; i < xmlNodes.Count(); i++)
+                    {
+                        var nd = xmlNodes[i];
+                        var txt = nd.InnerText.Replace("&nbsp;", "").Replace("\t", " ");
+                        txt = txt.Replace("\r", "").Replace("\n", "");
+                        dataGridView.Rows[i].Cells[2].Value = txt;
+                    }
                 }
-                // detail
-                xmlNodes = doc.DocumentNode.SelectNodes(src.Search.ResultName);
-                for (var i = 0; i < xmlNodes.Count(); i++)
-                {
-                    var nd = xmlNodes[i];
-                    var txt = nd.InnerText.Replace("&nbsp;", "").Replace("\t", " ");
-                    txt = txt.Replace("\r", "").Replace("\n", "");
-                    dataGridView.Rows[i].Cells[2].Value = txt;
-                }
-
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误");
             }
         }
 
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             Debug.WriteLine($"{e.RowIndex} {e.ColumnIndex} {dataGridView[e.ColumnIndex, e.RowIndex].Value}");
-            if ( e.ColumnIndex == 4 )  // button
+            if (e.ColumnIndex == 4)  // button
             {
                 var url = dataGridView[3, e.RowIndex].Value.ToString();
                 var src = _appSrc.Sources[comboBox_search_source.SelectedIndex];
 
                 var html = "";
-                if (_appTool.FetchGet(url, ref html, src.Encoding) > 0)
+                try
                 {
-                    var doc = new HtmlAgilityPack.HtmlDocument();
-                    doc.LoadHtml(html);
-                    // title
-                    var title = doc.DocumentNode.SelectNodes(src.Download.ImageName).FirstOrDefault().InnerText;
-                    var folder = $"./Data/{src.Name}-{System.IO.Path.GetFileNameWithoutExtension(url)}-{title}";
-                    System.IO.Directory.CreateDirectory(folder);
-                    // images
-                    var xmlNodes = doc.DocumentNode.SelectNodes(src.Download.ImageUrl);
-                    var nc = xmlNodes.Count();
-                    for (var i = 0; i < nc; i++)
+                    if (_appTool.FetchGet(url, ref html, src.Encoding) > 0)
                     {
-                        var reflink = xmlNodes[i].Attributes["src"].Value.ToString();
-                        var imgurl = $"{src.Url}{reflink}";
-                        var targetPath = $"{folder}/{i + 1}{System.IO.Path.GetExtension(reflink)}";
-                        label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download start...";
-                        if( _appTool.FetchGetFile(imgurl, targetPath) < 0)
+                        var doc = new HtmlAgilityPack.HtmlDocument();
+                        doc.LoadHtml(html);
+                        // title
+                        var title = doc.DocumentNode.SelectNodes(src.Download.ImageName).FirstOrDefault().InnerText;
+                        var folder = $"./Data/{src.Name}-{System.IO.Path.GetFileNameWithoutExtension(url)}-{title}";
+                        System.IO.Directory.CreateDirectory(folder);
+                        // images
+                        var xmlNodes = doc.DocumentNode.SelectNodes(src.Download.ImageUrl);
+                        var nc = xmlNodes.Count();
+                        for (var i = 0; i < nc; i++)
                         {
-                            label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Failed.";
+                            var reflink = xmlNodes[i].Attributes["src"].Value.ToString();
+                            if (reflink.StartsWith("/"))
+                            {
+                                reflink = reflink.Substring(1);
+                            }
+                            var imgurl = $"{src.Url}{reflink}";
+                            var targetPath = $"{folder}/{i + 1}{System.IO.Path.GetExtension(reflink)}";
+                            label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download start...";
+                            if (_appTool.FetchGetFile(imgurl, targetPath) < 0)
+                            {
+                                label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Failed.";
+                            }
+                            else
+                            {
+                                label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Done.";
+                            }
+
                         }
-                        else
-                        {
-                            label_log.Text = $"{i + 1}/{nc} {reflink} => {folder} download Done.";
-                        }
-                        
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "错误");
+                }
             }
+        }
+
+        private void comboBox_search_source_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var src = _appSrc.Sources[comboBox_search_source.SelectedIndex];
+            toolTip1.SetToolTip(comboBox_search_source, src.Tips);
         }
     }
 }
