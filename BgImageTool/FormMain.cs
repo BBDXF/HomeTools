@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 
@@ -7,11 +8,38 @@ namespace BgImageTool
     public partial class FormMain : Form
     {
         public string root_folder = "./Data";
+        private IDesktopWallpaper Wallpaper = (IDesktopWallpaper)new DesktopWallpaper();
 
         public FormMain()
         {
             InitializeComponent();
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
+
+        //[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+        //public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+
+        public void SetBGForScreens(List<string> paths)
+        {
+            var monitorCount = Wallpaper.GetMonitorDevicePathCount();
+            var uLastIndex = 0;
+            for (var i = 0; i < monitorCount; i++)
+            {
+                if (i < paths.Count)
+                {
+                    uLastIndex = i;
+                }
+                var screen_id = Wallpaper.GetMonitorDevicePathAt((uint)i);
+                Wallpaper.SetWallpaper(screen_id, paths[uLastIndex]);
+                label_log.Text = $"Set monitor background for {i + 1}/{monitorCount} using {paths[uLastIndex]}";
+            }
+        }
+        public void SetBGForScreens(string path)
+        {
+            // https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-setwallpaper
+            // SystemParametersInfo(20, 0, path, 2);
+            Wallpaper.SetWallpaper(null, path);
         }
 
         // http get
@@ -39,7 +67,7 @@ namespace BgImageTool
                     {
                         webst.CopyTo(fs);
                     }
-                }                
+                }
             }
             catch (Exception)
             {
@@ -67,6 +95,36 @@ namespace BgImageTool
             return "";
         }
 
+        public void SetBGfromImages(List<string> imgList)
+        {
+            // 随机壁纸
+            if (checkBox_random.Checked)
+            {
+                var imgList2 = new List<string>();
+                var seed = Guid.NewGuid().GetHashCode();
+                var r = new Random(seed);
+                while (imgList.Count > 0)
+                {
+                    var idx = r.Next(0, imgList.Count);
+                    imgList2.Add(imgList[idx]);
+                    imgList.RemoveAt(idx);
+                }
+                // update 
+                imgList = imgList2;
+            }
+            // 多屏幕不同壁纸
+            if (checkBox_multiscreen.Checked)
+            {
+                SetBGForScreens(imgList);
+            }
+            else
+            {
+                // SystemParametersInfo(20, 0, imgList.First(), 2);
+                Wallpaper.SetWallpaper(null, imgList.First());
+                label_log.Text = $"Set all monitor background with {imgList.First()}";
+            }
+        }
+
         private void FormMain_Load(object sender, EventArgs e)
         {
             System.IO.Directory.CreateDirectory(root_folder);
@@ -76,8 +134,9 @@ namespace BgImageTool
         {
             var url = $"https://cn.bing.com/HPImageArchive.aspx?format=js&idx={num_bing_idx.Value}&n={num_bing_count.Value}&mkt=zh-CN";
             var html = await FetchGet(url);
-            try { 
-                if( html.Length > 0)
+            try
+            {
+                if (html.Length > 0)
                 {
                     var doc = JsonDocument.Parse(html);
                     var imgs = doc.RootElement.GetProperty("images").EnumerateArray().ToArray();
@@ -88,8 +147,8 @@ namespace BgImageTool
                         var ele = imgs[i];
                         var img_url = $"https://www.bing.com{ele.GetProperty("url")}";
                         string path = $"{root_folder}/Bing_{ele.GetProperty("fullstartdate")}.jpg";
-                        label_log.Text = $"Bing {i+1}/{cn} => {path} start ...";
-                        if ( System.IO.File.Exists(path) )
+                        label_log.Text = $"Bing {i + 1}/{cn} => {path} start ...";
+                        if (System.IO.File.Exists(path))
                         {
                             label_log.Text = $"Bing {i + 1}/{cn} => {path} exist, skip it.";
                         }
@@ -97,10 +156,11 @@ namespace BgImageTool
                         {
                             await FetchGetFile(img_url, path);
                             label_log.Text = $"Bing {i + 1}/{cn} => {path} Done.";
-                        }                        
+                        }
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "错误");
             }
@@ -113,7 +173,7 @@ namespace BgImageTool
             var html = await FetchGet(url);
             try
             {
-                if ( html.Length > 0)
+                if (html.Length > 0)
                 {
                     var doc = JsonDocument.Parse(html);
                     var imgs = doc.RootElement.GetProperty("data").EnumerateArray().ToArray();
@@ -155,14 +215,14 @@ namespace BgImageTool
 
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ( tabControl1.SelectedTab == tabPage_360 )
+            if (tabControl1.SelectedTab == tabPage_360)
             {
                 // update 
                 comboBox_360_categary.Items.Clear();
-                
+
                 var url = "http://wallpaper.apc.360.cn/index.php?c=WallPaperAndroid&a=getAllCategories";
                 var html = await FetchGet(url);
-                if ( html.Length > 0 )
+                if (html.Length > 0)
                 {
                     var doc = JsonDocument.Parse(html);
                     var imgs = doc.RootElement.GetProperty("data");
@@ -180,6 +240,36 @@ namespace BgImageTool
                 }
             }
         }
+
+        private void button_bg_set_Click(object sender, EventArgs e)
+        {
+            var imgList = new List<String>();
+            DirectoryInfo d = new DirectoryInfo(root_folder);
+            var imgs = d.GetFiles("*.jpg");
+            imgs = imgs.OrderBy(g => g.CreationTime).Reverse().ToArray();
+            foreach (var f in imgs)
+            {
+                imgList.Add(f.FullName);
+            }
+            SetBGfromImages(imgList);
+        }
+
+        private void button_bg_select_Click(object sender, EventArgs e)
+        {
+            var fsDlg = new OpenFileDialog();
+            fsDlg.InitialDirectory = root_folder;
+            fsDlg.Filter = "JPG Image|*.jpg|PNG Image|*.png";
+            fsDlg.Multiselect = true;
+            fsDlg.Title = "Select the images you want set as background:";
+            fsDlg.CheckFileExists = true;
+            fsDlg.CheckPathExists = true;
+            //fsDlg.RestoreDirectory = true;
+            if (fsDlg.ShowDialog() == DialogResult.OK)
+            {
+                var imgList = fsDlg.FileNames.ToList();
+                SetBGfromImages(imgList);
+            }
+        }
     }
     public class BG360Categary
     {
@@ -188,4 +278,5 @@ namespace BgImageTool
         public string Count { get; set; }
         override public string ToString() { return Name + " - " + Count; }
     }
+
 }

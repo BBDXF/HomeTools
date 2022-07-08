@@ -79,7 +79,7 @@
             // checkBox_random
             // 
             this.checkBox_random.AutoSize = true;
-            this.checkBox_random.Location = new System.Drawing.Point(26, 28);
+            this.checkBox_random.Location = new System.Drawing.Point(26, 17);
             this.checkBox_random.Name = "checkBox_random";
             this.checkBox_random.Size = new System.Drawing.Size(75, 21);
             this.checkBox_random.TabIndex = 2;
@@ -90,7 +90,7 @@
             // checkBox_multiscreen
             // 
             this.checkBox_multiscreen.AutoSize = true;
-            this.checkBox_multiscreen.Location = new System.Drawing.Point(119, 28);
+            this.checkBox_multiscreen.Location = new System.Drawing.Point(119, 17);
             this.checkBox_multiscreen.Name = "checkBox_multiscreen";
             this.checkBox_multiscreen.Size = new System.Drawing.Size(111, 21);
             this.checkBox_multiscreen.TabIndex = 2;
@@ -100,30 +100,33 @@
             // 
             // button_bg_select
             // 
-            this.button_bg_select.Location = new System.Drawing.Point(397, 20);
+            this.button_bg_select.Location = new System.Drawing.Point(397, 9);
             this.button_bg_select.Name = "button_bg_select";
             this.button_bg_select.Size = new System.Drawing.Size(89, 35);
             this.button_bg_select.TabIndex = 1;
             this.button_bg_select.Text = "手动选择壁纸";
             this.button_bg_select.UseVisualStyleBackColor = true;
+            this.button_bg_select.Click += new System.EventHandler(this.button_bg_select_Click);
             // 
             // button_bg_set
             // 
-            this.button_bg_set.Location = new System.Drawing.Point(266, 20);
+            this.button_bg_set.Location = new System.Drawing.Point(266, 9);
             this.button_bg_set.Name = "button_bg_set";
             this.button_bg_set.Size = new System.Drawing.Size(89, 35);
             this.button_bg_set.TabIndex = 1;
             this.button_bg_set.Text = "设置壁纸";
             this.button_bg_set.UseVisualStyleBackColor = true;
+            this.button_bg_set.Click += new System.EventHandler(this.button_bg_set_Click);
             // 
             // label_log
             // 
+            this.label_log.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label_log.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label_log.Location = new System.Drawing.Point(6, 58);
+            this.label_log.Location = new System.Drawing.Point(0, 41);
             this.label_log.Name = "label_log";
-            this.label_log.Size = new System.Drawing.Size(578, 22);
+            this.label_log.Size = new System.Drawing.Size(584, 39);
             this.label_log.TabIndex = 0;
-            this.label_log.Text = "log section";
+            this.label_log.Text = "log section ";
             this.label_log.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabControl1
@@ -264,7 +267,6 @@
             this.num_360_idx.Name = "num_360_idx";
             this.num_360_idx.Size = new System.Drawing.Size(120, 23);
             this.num_360_idx.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.num_360_idx, "1 代表明天\r\n0 今天\r\n[-1,-16] 之前N天");
             // 
             // num_360_count
             // 
