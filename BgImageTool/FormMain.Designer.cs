@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panel_foot = new System.Windows.Forms.Panel();
+            this.num_tm_delay = new System.Windows.Forms.NumericUpDown();
+            this.radioButton_tm_change = new System.Windows.Forms.RadioButton();
+            this.radioButton_tm_none = new System.Windows.Forms.RadioButton();
             this.checkBox_random = new System.Windows.Forms.CheckBox();
             this.checkBox_multiscreen = new System.Windows.Forms.CheckBox();
             this.button_bg_select = new System.Windows.Forms.Button();
@@ -51,9 +54,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button_360 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.tabPage_bian = new System.Windows.Forms.TabPage();
+            this.comboBox_bian_categary = new System.Windows.Forms.ComboBox();
+            this.num_bian_page = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.button_bian = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel_foot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_tm_delay)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage_Bing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_bing_idx)).BeginInit();
@@ -61,25 +72,82 @@
             this.tabPage_360.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_360_idx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_360_count)).BeginInit();
+            this.tabPage_bian.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_bian_page)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_foot
             // 
+            this.panel_foot.Controls.Add(this.num_tm_delay);
+            this.panel_foot.Controls.Add(this.radioButton_tm_change);
+            this.panel_foot.Controls.Add(this.radioButton_tm_none);
             this.panel_foot.Controls.Add(this.checkBox_random);
             this.panel_foot.Controls.Add(this.checkBox_multiscreen);
             this.panel_foot.Controls.Add(this.button_bg_select);
             this.panel_foot.Controls.Add(this.button_bg_set);
             this.panel_foot.Controls.Add(this.label_log);
             this.panel_foot.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel_foot.Location = new System.Drawing.Point(0, 281);
+            this.panel_foot.Location = new System.Drawing.Point(0, 261);
             this.panel_foot.Name = "panel_foot";
-            this.panel_foot.Size = new System.Drawing.Size(584, 80);
+            this.panel_foot.Size = new System.Drawing.Size(584, 100);
             this.panel_foot.TabIndex = 1;
+            // 
+            // num_tm_delay
+            // 
+            this.num_tm_delay.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.num_tm_delay.Location = new System.Drawing.Point(506, 30);
+            this.num_tm_delay.Maximum = new decimal(new int[] {
+            18000,
+            0,
+            0,
+            0});
+            this.num_tm_delay.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_tm_delay.Name = "num_tm_delay";
+            this.num_tm_delay.Size = new System.Drawing.Size(66, 23);
+            this.num_tm_delay.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.num_tm_delay, "单位: 分钟(m), 壁纸更换周期。");
+            this.num_tm_delay.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // radioButton_tm_change
+            // 
+            this.radioButton_tm_change.AutoSize = true;
+            this.radioButton_tm_change.Location = new System.Drawing.Point(391, 31);
+            this.radioButton_tm_change.Name = "radioButton_tm_change";
+            this.radioButton_tm_change.Size = new System.Drawing.Size(122, 21);
+            this.radioButton_tm_change.TabIndex = 3;
+            this.radioButton_tm_change.Text = "定时换壁纸（分）";
+            this.radioButton_tm_change.UseVisualStyleBackColor = true;
+            this.radioButton_tm_change.CheckedChanged += new System.EventHandler(this.radioButton_tm_change_CheckedChanged);
+            // 
+            // radioButton_tm_none
+            // 
+            this.radioButton_tm_none.AutoSize = true;
+            this.radioButton_tm_none.Checked = true;
+            this.radioButton_tm_none.Location = new System.Drawing.Point(391, 6);
+            this.radioButton_tm_none.Name = "radioButton_tm_none";
+            this.radioButton_tm_none.Size = new System.Drawing.Size(74, 21);
+            this.radioButton_tm_none.TabIndex = 3;
+            this.radioButton_tm_none.TabStop = true;
+            this.radioButton_tm_none.Text = "定时关闭";
+            this.radioButton_tm_none.UseVisualStyleBackColor = true;
+            this.radioButton_tm_none.CheckedChanged += new System.EventHandler(this.radioButton_tm_none_CheckedChanged);
             // 
             // checkBox_random
             // 
             this.checkBox_random.AutoSize = true;
-            this.checkBox_random.Location = new System.Drawing.Point(26, 17);
+            this.checkBox_random.Location = new System.Drawing.Point(26, 10);
             this.checkBox_random.Name = "checkBox_random";
             this.checkBox_random.Size = new System.Drawing.Size(75, 21);
             this.checkBox_random.TabIndex = 2;
@@ -90,7 +158,7 @@
             // checkBox_multiscreen
             // 
             this.checkBox_multiscreen.AutoSize = true;
-            this.checkBox_multiscreen.Location = new System.Drawing.Point(119, 17);
+            this.checkBox_multiscreen.Location = new System.Drawing.Point(26, 37);
             this.checkBox_multiscreen.Name = "checkBox_multiscreen";
             this.checkBox_multiscreen.Size = new System.Drawing.Size(111, 21);
             this.checkBox_multiscreen.TabIndex = 2;
@@ -100,9 +168,9 @@
             // 
             // button_bg_select
             // 
-            this.button_bg_select.Location = new System.Drawing.Point(397, 9);
+            this.button_bg_select.Location = new System.Drawing.Point(261, 15);
             this.button_bg_select.Name = "button_bg_select";
-            this.button_bg_select.Size = new System.Drawing.Size(89, 35);
+            this.button_bg_select.Size = new System.Drawing.Size(89, 43);
             this.button_bg_select.TabIndex = 1;
             this.button_bg_select.Text = "手动选择壁纸";
             this.button_bg_select.UseVisualStyleBackColor = true;
@@ -110,9 +178,9 @@
             // 
             // button_bg_set
             // 
-            this.button_bg_set.Location = new System.Drawing.Point(266, 9);
+            this.button_bg_set.Location = new System.Drawing.Point(166, 15);
             this.button_bg_set.Name = "button_bg_set";
-            this.button_bg_set.Size = new System.Drawing.Size(89, 35);
+            this.button_bg_set.Size = new System.Drawing.Size(89, 43);
             this.button_bg_set.TabIndex = 1;
             this.button_bg_set.Text = "设置壁纸";
             this.button_bg_set.UseVisualStyleBackColor = true;
@@ -122,7 +190,7 @@
             // 
             this.label_log.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label_log.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label_log.Location = new System.Drawing.Point(0, 41);
+            this.label_log.Location = new System.Drawing.Point(0, 61);
             this.label_log.Name = "label_log";
             this.label_log.Size = new System.Drawing.Size(584, 39);
             this.label_log.TabIndex = 0;
@@ -133,13 +201,14 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage_Bing);
             this.tabControl1.Controls.Add(this.tabPage_360);
+            this.tabControl1.Controls.Add(this.tabPage_bian);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.ImageList = this.imageList1;
             this.tabControl1.ItemSize = new System.Drawing.Size(100, 64);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(584, 281);
+            this.tabControl1.Size = new System.Drawing.Size(584, 261);
             this.tabControl1.TabIndex = 1;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -154,7 +223,7 @@
             this.tabPage_Bing.Location = new System.Drawing.Point(4, 68);
             this.tabPage_Bing.Name = "tabPage_Bing";
             this.tabPage_Bing.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Bing.Size = new System.Drawing.Size(576, 209);
+            this.tabPage_Bing.Size = new System.Drawing.Size(576, 189);
             this.tabPage_Bing.TabIndex = 0;
             this.tabPage_Bing.Text = "Bing";
             this.tabPage_Bing.ToolTipText = "Bing 壁纸下载";
@@ -241,7 +310,7 @@
             this.tabPage_360.Location = new System.Drawing.Point(4, 68);
             this.tabPage_360.Name = "tabPage_360";
             this.tabPage_360.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_360.Size = new System.Drawing.Size(576, 209);
+            this.tabPage_360.Size = new System.Drawing.Size(576, 189);
             this.tabPage_360.TabIndex = 1;
             this.tabPage_360.Text = "360";
             this.tabPage_360.ToolTipText = "360壁纸下载";
@@ -306,9 +375,9 @@
             // 
             // button_360
             // 
-            this.button_360.Location = new System.Drawing.Point(38, 154);
+            this.button_360.Location = new System.Drawing.Point(48, 141);
             this.button_360.Name = "button_360";
-            this.button_360.Size = new System.Drawing.Size(188, 35);
+            this.button_360.Size = new System.Drawing.Size(211, 35);
             this.button_360.TabIndex = 6;
             this.button_360.Text = "下载";
             this.button_360.UseVisualStyleBackColor = true;
@@ -323,14 +392,89 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "下载数量:";
             // 
+            // tabPage_bian
+            // 
+            this.tabPage_bian.Controls.Add(this.comboBox_bian_categary);
+            this.tabPage_bian.Controls.Add(this.num_bian_page);
+            this.tabPage_bian.Controls.Add(this.label6);
+            this.tabPage_bian.Controls.Add(this.label7);
+            this.tabPage_bian.Controls.Add(this.button_bian);
+            this.tabPage_bian.ImageKey = "4k.png";
+            this.tabPage_bian.Location = new System.Drawing.Point(4, 68);
+            this.tabPage_bian.Name = "tabPage_bian";
+            this.tabPage_bian.Size = new System.Drawing.Size(576, 189);
+            this.tabPage_bian.TabIndex = 2;
+            this.tabPage_bian.Text = "netbian";
+            this.tabPage_bian.UseVisualStyleBackColor = true;
+            // 
+            // comboBox_bian_categary
+            // 
+            this.comboBox_bian_categary.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_bian_categary.FormattingEnabled = true;
+            this.comboBox_bian_categary.Location = new System.Drawing.Point(246, 18);
+            this.comboBox_bian_categary.Name = "comboBox_bian_categary";
+            this.comboBox_bian_categary.Size = new System.Drawing.Size(153, 25);
+            this.comboBox_bian_categary.TabIndex = 14;
+            // 
+            // num_bian_page
+            // 
+            this.num_bian_page.Location = new System.Drawing.Point(246, 58);
+            this.num_bian_page.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_bian_page.Name = "num_bian_page";
+            this.num_bian_page.Size = new System.Drawing.Size(120, 23);
+            this.num_bian_page.TabIndex = 11;
+            this.num_bian_page.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(178, 21);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(59, 17);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "图片分类:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(178, 63);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(35, 17);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "页码:";
+            // 
+            // button_bian
+            // 
+            this.button_bian.Location = new System.Drawing.Point(188, 111);
+            this.button_bian.Name = "button_bian";
+            this.button_bian.Size = new System.Drawing.Size(211, 35);
+            this.button_bian.TabIndex = 13;
+            this.button_bian.Text = "下载";
+            this.button_bian.UseVisualStyleBackColor = true;
+            this.button_bian.Click += new System.EventHandler(this.button_bian_Click);
+            // 
             // imageList1
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "360.png");
             this.imageList1.Images.SetKeyName(1, "app.ico");
             this.imageList1.Images.SetKeyName(2, "bing.png");
+            this.imageList1.Images.SetKeyName(3, "4k.png");
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FormMain
             // 
@@ -346,6 +490,7 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.panel_foot.ResumeLayout(false);
             this.panel_foot.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_tm_delay)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage_Bing.ResumeLayout(false);
             this.tabPage_Bing.PerformLayout();
@@ -355,6 +500,9 @@
             this.tabPage_360.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_360_idx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_360_count)).EndInit();
+            this.tabPage_bian.ResumeLayout(false);
+            this.tabPage_bian.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_bian_page)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -384,5 +532,15 @@
         private Label label4;
         private ComboBox comboBox_360_categary;
         private Label label5;
+        private RadioButton radioButton_tm_change;
+        private RadioButton radioButton_tm_none;
+        private NumericUpDown num_tm_delay;
+        private System.Windows.Forms.Timer timer1;
+        private TabPage tabPage_bian;
+        private ComboBox comboBox_bian_categary;
+        private NumericUpDown num_bian_page;
+        private Label label6;
+        private Label label7;
+        private Button button_bian;
     }
 }
