@@ -346,8 +346,11 @@ namespace BgImageTool
                         var smurl = nd.Attributes["src"].Value;
 
                         var ext = System.IO.Path.GetExtension(smurl);
-                        var smname = System.IO.Path.GetFileNameWithoutExtension(smurl);                        
-                        var lgname = smname.Substring(5, smname.Length - 5 - 10) + ext;
+                        var smname = System.IO.Path.GetFileNameWithoutExtension(smurl);
+                        var lgname = smname + ext;
+                        if (smname.StartsWith("small") && smname.Length>15) { 
+                            lgname = smname.Substring(5, smname.Length - 5 - 10) + ext;
+                        }
                         var lgpath = smurl.Substring(0, smurl.Length-smname.Length-ext.Length) + lgname;
 
                         string path = $"{root_folder}/BiAn_{lgname}";
